@@ -3,6 +3,7 @@ package com.example.indiatravel.controller;
 import com.example.indiatravel.model.UserSession;
 import com.example.indiatravel.repository.UserSessionRepository;
 import com.example.indiatravel.service.GeminiService;
+import com.example.indiatravel.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -15,6 +16,9 @@ public class ApiController {
 
     @Autowired
     private GeminiService geminiService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private UserSessionRepository sessionRepository;
@@ -84,5 +88,12 @@ public class ApiController {
         String prompt = "Create a " + days + "-day itinerary for " + location + ". Preferences: " + preferences;
         
         return geminiService.generateContent(prompt, systemInstruction);
+    }
+
+    @PostMapping("/image")
+    public String generateImage(@RequestBody Map<String, String> request) {
+        String location = request.get("location");
+        String imageUrl = imageService.generateImageUrl(location);
+        return "{\"imageUrl\": \"" + imageUrl + "\"}";
     }
 }
