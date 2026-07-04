@@ -1,12 +1,12 @@
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
 COPY . .
 
-RUN chmod +x gradlew
-RUN ./gradlew bootJar --no-daemon
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "build/libs/india-travel-api-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","target/india-travel-api-0.0.1-SNAPSHOT.jar"]
